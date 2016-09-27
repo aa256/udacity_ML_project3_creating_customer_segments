@@ -73,7 +73,7 @@ def cluster_results(reduced_data, preds, centers, pca_samples):
 	ax.set_title("Cluster Learning on PCA-Reduced Data - Centroids Marked by Number\nTransformed Sample Data Marked by Black Cross");
 
 
-def channel_results(reduced_data, outliers, pca_samples):
+def channel_results(reduced_data, outliers, pca_samples, cluster=None):
 	'''
 	Visualizes the PCA-reduced cluster data in two dimensions using the full dataset
 	Data is labeled by "Channel" and cues added for student-selected sample data
@@ -89,6 +89,9 @@ def channel_results(reduced_data, outliers, pca_samples):
 	# Create the Channel DataFrame
 	channel = pd.DataFrame(full_data['Channel'], columns = ['Channel'])
 	channel = channel.drop(channel.index[outliers]).reset_index(drop = True)
+	if cluster:
+		channel = channel.loc[cluster]
+		reduced_data = reduced_data.loc[cluster]
 	labeled = pd.concat([reduced_data, channel], axis = 1)
 	
 	# Generate the cluster plot
